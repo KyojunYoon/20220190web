@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI 코디 분석</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header {
+      background-color: #ffffff;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+      color: #1e3a8a;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      background-color: #e5eaf2;
+      padding: 10px 0;
+      border-bottom: 1px solid #ccc;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      padding-bottom: 4px;
+    }
+
+    nav a:hover {
+      color: #1e3a8a;
+      border-bottom: 2px solid #1e3a8a;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    form {
+      margin-bottom: 2rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      padding: 0.6rem;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #388e3c;
+    }
+
+    .image-preview {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .image-preview img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .result {
+      display: none;
+      background: #f9fafb;
+      padding: 1.5rem;
+      border-left: 6px solid #4caf50;
+      border-radius: 8px;
+    }
+
+    .result h2 {
+      margin-top: 0;
+      color: #2e7d32;
+    }
+
+    .result-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    .result-table th, .result-table td {
+      border: 1px solid #ddd;
+      padding: 0.8rem;
+      text-align: left;
+    }
+
+    .result-table th {
+      background-color: #eef4ea;
+      color: #2e7d32;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>AI 코디 분석</h1>
+  </header>
+
+  <nav>
+    <a href="index.html">홈</a>
+    <a href="옷장등록및관리.html">옷장등록및관리</a>
+    <a href="AI.html">AI코디분석</a>
+    <a href="코디추천.html">오늘의AI추천</a>
+    <a href="즐겨찾기.html">즐겨찾기</a>
+    <a href="커뮤니티.html">커뮤니티</a>
+    <a href="인플루언서.html">스타일인플루언서</a>
+    <a href="https://www.musinsa.com/main/musinsa/recommend?gf=A">옷 상점</a>
+  </nav>
+
+  <div class="container">
+    <form id="aiForm">
+      <label for="aiImage">코디 분석 이미지 업로드</label>
+      <input type="file" id="aiImage" accept="image/*" required />
+      <button type="submit">AI 분석 시작</button>
+    </form>
+
+    <div class="image-preview" id="imagePreview"></div>
+
+    <div class="result" id="aiResult">
+      <h2>AI 분석 결과</h2>
+      <table class="result-table">
+        <tr>
+          <th>항목</th>
+          <th>분석 결과</th>
+        </tr>
+        <tr>
+          <td>카테고리</td>
+          <td id="res-category">상의</td>
+        </tr>
+        <tr>
+          <td>스타일</td>
+          <td id="res-style">캐주얼</td>
+        </tr>
+        <tr>
+          <td>추천 색상</td>
+          <td id="res-colors">화이트, 네이비</td>
+        </tr>
+        <tr>
+          <td>계절</td>
+          <td id="res-season">봄</td>
+        </tr>
+        <tr>
+          <td>요약 분석</td>
+          <td id="res-summary">편안하고 심플한 데일리룩으로 추천됩니다.</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.getElementById("aiForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const input = document.getElementById("aiImage");
+        const preview = document.getElementById("imagePreview");
+        const result = document.getElementById("aiResult");
+
+        if (input.files.length === 0) {
+          alert("이미지를 업로드해주세요.");
+          return;
+        }
+
+        const file = input.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+          preview.innerHTML = `<h3>업로드한 이미지</h3><img src="${event.target.result}" alt="업로드된 이미지" />`;
+          result.style.display = "block";
+        };
+
+        reader.readAsDataURL(file);
+      });
+    });
+  </script>
+
+</body>
+</html>

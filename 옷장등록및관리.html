@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>내 옷장 등록</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
+      color: #1f2937;
+      padding: 2rem;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      background-color: #ffffff;
+      padding: 1rem 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
+    }
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #1f2937;
+      font-weight: bold;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      color: #0d47a1;
+    }
+    form {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 15px rgba(0,0,0,0.15);
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 600;
+      color: #374151;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 2rem;
+      width: 100%;
+      background-color: #4caf50;
+      color: white;
+      font-size: 1rem;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #388e3c;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+     <a href="index.html">홈</a>
+    <a href="옷장등록및관리.html">옷장등록및관리</a>
+    <a href="AI.html">AI코디분석</a>
+    <a href="코디추천.html">오늘의AI추천</a>
+    <a href="즐겨찾기.html">즐겨찾기</a>
+    <a href="커뮤니티.html">커뮤니티</a>
+    <a href="인플루언서.html">스타일인플루언서</a>
+    <a href="https://www.musinsa.com/main/musinsa/recommend?gf=A">옷 상점</a>
+  </nav>
+
+  <h1>내 옷장 등록</h1>
+
+  <form id="closet-form">
+    <label for="photo">옷 사진</label>
+    <input type="file" id="photo" accept="image/*" required />
+
+    <label for="category">카테고리</label>
+    <select id="category" required>
+      <option value="">선택하세요</option>
+      <option>상의</option>
+      <option>하의</option>
+      <option>신발</option>
+      <option>모자</option>
+      <option>기타</option>
+    </select>
+
+    <label for="brand">브랜드</label>
+    <input type="text" id="brand" />
+
+    <label for="color">색상</label>
+    <input type="text" id="color" />
+
+    <label for="season">계절</label>
+    <select id="season">
+      <option value="">선택하세요</option>
+      <option>봄</option>
+      <option>여름</option>
+      <option>가을</option>
+      <option>겨울</option>
+    </select>
+
+    <label for="gender">성별</label>
+    <select id="gender">
+      <option value="">선택하세요</option>
+      <option>남성</option>
+      <option>여성</option>
+      <option>공용</option>
+    </select>
+
+    <label for="style">스타일</label>
+    <input type="text" id="style" placeholder="캐주얼, 스트릿 등" />
+
+    <label for="wear-count">착용 횟수</label>
+    <input type="number" id="wear-count" min="0" />
+
+    <button type="submit">등록하기</button>
+  </form>
+
+  <script>
+    document.getElementById('closet-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const reader = new FileReader();
+      const fileInput = document.getElementById("photo");
+      const file = fileInput.files[0];
+
+      if (!file) {
+        alert("이미지를 업로드해주세요.");
+        return;
+      }
+
+      reader.onload = function(e) {
+        const newItem = {
+          image: e.target.result,
+          category: document.getElementById("category").value,
+          brand: document.getElementById("brand").value,
+          color: document.getElementById("color").value,
+          season: document.getElementById("season").value,
+          gender: document.getElementById("gender").value,
+          style: document.getElementById("style").value,
+          wearCount: parseInt(document.getElementById("wear-count").value) || 0
+        };
+
+        const current = JSON.parse(localStorage.getItem("myCloset")) || [];
+        current.push(newItem);
+        localStorage.setItem("myCloset", JSON.stringify(current));
+
+       
+        const goToCloset = confirm("등록이 완료되었습니다.\n나만의 옷장으로 이동하시겠습니까?");
+        if (goToCloset) {
+          window.location.href = "나만의옷장.html";
+        }
+      };
+
+      reader.readAsDataURL(file);
+    });
+  </script>
+
+</body>
+</html>

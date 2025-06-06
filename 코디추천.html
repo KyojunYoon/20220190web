@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI 코디 추천</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: linear-gradient(to right, #fef9c3, #f0f9ff);
+      color: #1f2937;
+    }
+    header {
+      text-align: center;
+      background: linear-gradient(to right, #60a5fa, #818cf8);
+      color: white;
+      padding: 2rem 1rem;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.2rem;
+    }
+    nav {
+      background: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: center;
+      padding: 1rem;
+      gap: 1rem;
+    }
+    nav a {
+      color: #3b82f6;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+    }
+    nav a:hover {
+      background: #dbeafe;
+    }
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    select, button, input[type="number"] {
+      width: 100%;
+      margin: 0.5rem 0;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background: #3b82f6;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #2563eb;
+    }
+    .result-box {
+      background: #f0fdf4;
+      border-left: 4px solid #10b981;
+      padding: 1rem;
+      margin-top: 1rem;
+      border-radius: 8px;
+    }
+    .rating-box {
+      margin-top: 2rem;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .btn-fav {
+      background: #facc15;
+      color: #78350f;
+    }
+    .btn-fav:hover {
+      background: #fde047;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>AI 기반 코디 추천</h1>
+</header>
+
+<nav>
+      <a href="index.html">홈</a>
+    <a href="옷장등록및관리.html">옷장등록및관리</a>
+    <a href="AI.html">AI코디분석</a>
+    <a href="코디추천.html">오늘의AI추천</a>
+    <a href="즐겨찾기.html">즐겨찾기</a>
+    <a href="커뮤니티.html">커뮤니티</a>
+    <a href="인플루언서.html">스타일인플루언서</a>
+    <a href="https://www.musinsa.com/main/musinsa/recommend?gf=A">옷 상점</a>
+</nav>
+
+<main>
+  <h2>나에게 맞는 코디 추천받기</h2>
+
+  <label>성별</label>
+  <select id="gender">
+    <option value="남성">남성</option>
+    <option value="여성">여성</option>
+  </select>
+
+  <label>스타일</label>
+  <select id="style">
+    <option value="캐주얼">캐주얼</option>
+    <option value="스트릿">스트릿</option>
+    <option value="시크">시크</option>
+    <option value="포멀">포멀</option>
+    <option value="스포티">스포티</option>
+  </select>
+
+  <label>계절</label>
+  <select id="season">
+    <option value="봄">봄</option>
+    <option value="여름">여름</option>
+    <option value="가을">가을</option>
+    <option value="겨울">겨울</option>
+  </select>
+
+  <button onclick="getRecommendation()">코디 추천 받기</button>
+
+  <div id="result" class="result-box" style="display:none;"></div>
+  <button onclick="addToFavorites()" class="btn-fav">★ 즐겨찾기 추가</button>
+
+  <div class="rating-box">
+    <h3>코디 평가</h3>
+    <label>상의 (1~5점)</label>
+    <input type="number" id="top-score" min="1" max="5">
+    <label>하의 (1~5점)</label>
+    <input type="number" id="bottom-score" min="1" max="5">
+    <label>신발 (1~5점)</label>
+    <input type="number" id="shoes-score" min="1" max="5">
+    <button onclick="submitRating()">평가 제출</button>
+  </div>
+</main>
+
+<script>
+function getRecommendation() {
+  const gender = document.getElementById('gender').value;
+  const style = document.getElementById('style').value;
+  const season = document.getElementById('season').value;
+
+  let outfit = '';
+  if (style === "캐주얼" && season === "여름") {
+    outfit = "반팔 티셔츠, 쇼츠, 샌들";
+  } else if (style === "캐주얼" && season === "겨울") {
+    outfit = "후드티, 청바지, 운동화";
+  } else if (style === "포멀" && season === "여름") {
+    outfit = "셔츠, 치노 팬츠, 로퍼";
+  } else if (style === "포멀" && season === "겨울") {
+    outfit = "코트, 니트, 슬랙스";
+  } else if (style === "스트릿" && season === "여름") {
+    outfit = "티셔츠, 트레이닝 팬츠, 스니커즈";
+  } else if (style === "스트릿" && season === "겨울") {
+    outfit = "후드티, 바람막이, 부츠";
+  } else if (style === "시크" && season === "여름") {
+    outfit = "블라우스, 미니 스커트, 샌들";
+  } else if (style === "시크" && season === "겨울") {
+    outfit = "코트, 블랙 레깅스, 앵클부츠";
+  } else {
+    outfit = "기본 셋업 코디";
+  }
+
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('result').innerHTML = `
+    <h3>추천 결과</h3>
+    <p><strong>${gender}용 ${season} 시즌 ${style} 스타일 코디 추천:</strong> ${outfit}</p>
+    <a href="https://www.musinsa.com" target="_blank">무신사 구매 링크</a>
+  `;
+}
+
+function addToFavorites() {
+  const gender = document.getElementById('gender').value;
+  const style = document.getElementById('style').value;
+  const season = document.getElementById('season').value;
+  const outfit = document.getElementById('result').innerText;
+
+  const favorite = {
+    title: `${season} ${style} 룩`,
+    desc: outfit,
+    img: "https://www.musinsa.com"
+  };
+
+  let favs = JSON.parse(localStorage.getItem('favorites') || '[]');
+  favs.push(favorite);
+  localStorage.setItem('즐겨찾기', JSON.stringify(favs));
+
+  if (confirm("즐겨찾기에 추가되었습니다. 즐겨찾기 페이지로 이동하시겠습니까?")) {
+    window.location.href = "즐겨찾기.html";
+  }
+}
+
+function submitRating() {
+  const rating = {
+    top: parseInt(document.getElementById('top-score').value),
+    bottom: parseInt(document.getElementById('bottom-score').value),
+    shoes: parseInt(document.getElementById('shoes-score').value),
+    date: new Date().toISOString()
+  };
+  console.log("평가 전송됨:", rating);
+  alert("평가가 저장되었습니다.");
+}
+</script>
+
+</body>
+</html>

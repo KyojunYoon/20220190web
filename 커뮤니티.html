@@ -1,0 +1,289 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>커뮤니티</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #1f2937;
+      color: #f9fafb;
+    }
+    header {
+      background: #111827;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+    nav {
+      background: #374151;
+      padding: 0.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+    }
+    nav a {
+      color: #d1d5db;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    main {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    .post {
+      background: #374151;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.2rem;
+      position: relative;
+      font-size: 0.9rem;
+    }
+    .post-time {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-bottom: 0.4rem;
+    }
+    .delete-post, .edit-post {
+      position: absolute;
+      top: 6px;
+      background: #6b7280;
+      border: none;
+      color: white;
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .delete-post { right: 6px; }
+    .edit-post { right: 50px; }
+    .post-actions button, .comment-actions button {
+      background: #6b7280;
+      border: none;
+      color: white;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      margin-right: 0.3rem;
+      cursor: pointer;
+      font-size: 0.75rem;
+    }
+    .comment {
+      background: #4b5563;
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      position: relative;
+    }
+    .comment-time {
+      font-size: 0.7rem;
+      color: #d1d5db;
+      margin-top: 0.3rem;
+    }
+    .delete-comment {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: #9ca3af;
+      border: none;
+      font-size: 0.7rem;
+      padding: 2px 5px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .comment-actions {
+      margin-top: 0.3rem;
+    }
+    .comment-form {
+      margin-top: 0.7rem;
+    }
+    textarea, input {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 6px;
+      resize: vertical;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      border: none;
+    }
+    .write-post {
+      margin-bottom: 2rem;
+    }
+    .write-post button {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .write-post button:hover {
+      background: #2563eb;
+    }
+  </style>
+</head>
+<body>
+
+<header>커뮤니티</header>
+<nav>
+   <a href="index.html">홈</a>
+    <a href="옷장등록및관리.html">옷장등록및관리</a>
+    <a href="AI.html">AI코디분석</a>
+    <a href="코디추천.html">오늘의AI추천</a>
+    <a href="즐겨찾기.html">즐겨찾기</a>
+    <a href="커뮤니티.html">커뮤니티</a>
+    <a href="인플루언서.html">스타일인플루언서</a>
+    <a href="https://www.musinsa.com/main/musinsa/recommend?gf=A">옷 상점</a>
+</nav>
+
+<main>
+  <div class="write-post">
+    <input type="text" id="nickname" placeholder="작성자 닉네임 (예: 패잘알)" />
+    <textarea id="newPost" placeholder="오늘의 패션 아이디어를 공유해보세요!"></textarea>
+    <button onclick="addPost()">글쓰기</button>
+  </div>
+  <div id="posts"></div>
+</main>
+
+<script>
+let posts = JSON.parse(localStorage.getItem('posts') || '[]');
+
+function savePosts() {
+  localStorage.setItem('posts', JSON.stringify(posts));
+}
+
+function addPost() {
+  const text = document.getElementById('newPost').value.trim();
+  const nickname = document.getElementById('nickname').value.trim() || "익명";
+  if (!text) return;
+
+  const post = {
+    id: Date.now(),
+    nickname,
+    text,
+    likes: 0,
+    dislikes: 0,
+    comments: [],
+    time: new Date().toLocaleString()
+  };
+
+  posts.unshift(post);
+  savePosts();
+  document.getElementById('newPost').value = '';
+  document.getElementById('nickname').value = '';
+  renderPosts();
+}
+
+function deletePost(id) {
+  posts = posts.filter(p => p.id !== id);
+  savePosts();
+  renderPosts();
+}
+
+function editPost(id) {
+  const post = posts.find(p => p.id === id);
+  const newText = prompt("내용 수정", post.text);
+  if (newText) {
+    post.text = newText;
+    savePosts();
+    renderPosts();
+  }
+}
+
+function addComment(postId) {
+  const textarea = document.getElementById('comment-' + postId);
+  const commentText = textarea.value.trim();
+  if (!commentText) return;
+
+  const comment = {
+    text: commentText,
+    time: new Date().toLocaleString(),
+    likes: 0,
+    dislikes: 0
+  };
+
+  const post = posts.find(p => p.id === postId);
+  post.comments.push(comment);
+  textarea.value = '';
+  savePosts();
+  renderPosts();
+}
+
+function deleteComment(postId, index) {
+  const post = posts.find(p => p.id === postId);
+  post.comments.splice(index, 1);
+  savePosts();
+  renderPosts();
+}
+
+function likePost(id) {
+  posts.find(p => p.id === id).likes++;
+  savePosts();
+  renderPosts();
+}
+
+function dislikePost(id) {
+  posts.find(p => p.id === id).dislikes++;
+  savePosts();
+  renderPosts();
+}
+
+function likeComment(postId, index) {
+  posts.find(p => p.id === postId).comments[index].likes++;
+  savePosts();
+  renderPosts();
+}
+
+function dislikeComment(postId, index) {
+  posts.find(p => p.id === postId).comments[index].dislikes++;
+  savePosts();
+  renderPosts();
+}
+
+function renderPosts() {
+  const container = document.getElementById('posts');
+  container.innerHTML = '';
+  posts.forEach((post) => {
+    const div = document.createElement('div');
+    div.className = 'post';
+    div.innerHTML = `
+      <button class="delete-post" onclick="deletePost(${post.id})">✕</button>
+      <button class="edit-post" onclick="editPost(${post.id})">수정</button>
+      <div class="post-time">${post.nickname} • ${post.time}</div>
+      <div>${post.text}</div>
+      <div class="post-actions">
+        <button onclick="likePost(${post.id})">👍 ${post.likes}</button>
+        <button onclick="dislikePost(${post.id})">👎 ${post.dislikes}</button>
+      </div>
+      ${post.comments.map((c, i) => `
+        <div class="comment">
+          ${c.text}
+          <button class="delete-comment" onclick="deleteComment(${post.id}, ${i})">삭제</button>
+          <div class="comment-time">${c.time}</div>
+          <div class="comment-actions">
+            <button onclick="likeComment(${post.id}, ${i})">👍 ${c.likes}</button>
+            <button onclick="dislikeComment(${post.id}, ${i})">👎 ${c.dislikes}</button>
+          </div>
+        </div>
+      `).join('')}
+      <div class="comment-form">
+        <textarea id="comment-${post.id}" placeholder="댓글 작성..."></textarea>
+        <button onclick="addComment(${post.id})">댓글 입력</button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+renderPosts();
+</script>
+
+</body>
+</html>

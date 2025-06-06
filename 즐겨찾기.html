@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>즐겨찾기 코디</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #1f2937;
+      color: #f3f4f6;
+    }
+
+    nav {
+      background: #111827;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    nav a {
+      color: #facc15;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #fde68a;
+    }
+
+    header {
+      text-align: center;
+      padding: 50px 20px 20px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #facc15;
+    }
+
+    p.subtitle {
+      font-size: 1.1rem;
+      color: #9ca3af;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .favorites {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .fav-card {
+      background: #374151;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .fav-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .fav-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .fav-info {
+      padding: 16px;
+      flex-grow: 1;
+    }
+
+    .fav-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #facc15;
+      margin-bottom: 6px;
+    }
+
+    .fav-desc {
+      font-size: 0.95rem;
+      color: #e5e7eb;
+      margin-bottom: 10px;
+    }
+
+    .fav-buttons {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn-remove,
+    .btn-buy {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .btn-remove {
+      background: #ef4444;
+      color: white;
+    }
+
+    .btn-remove:hover {
+      background: #dc2626;
+    }
+
+    .btn-buy {
+      background: #10b981;
+      color: white;
+    }
+
+    .btn-buy:hover {
+      background: #059669;
+    }
+
+    .rating {
+      margin-top: 10px;
+    }
+
+    .rating label {
+      margin-right: 5px;
+    }
+
+    .rating input {
+      width: 40px;
+      padding: 4px;
+      border-radius: 4px;
+      border: none;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 10px 20px;
+      background: #f59e0b;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+    }
+
+    .back-btn:hover {
+      background: #d97706;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+     <a href="index.html">홈</a>
+    <a href="옷장등록및관리.html">옷장등록및관리</a>
+    <a href="AI.html">AI코디분석</a>
+    <a href="코디추천.html">오늘의AI추천</a>
+    <a href="즐겨찾기.html">즐겨찾기</a>
+    <a href="커뮤니티.html">커뮤니티</a>
+    <a href="인플루언서.html">스타일인플루언서</a>
+    <a href="https://www.musinsa.com/main/musinsa/recommend?gf=A">옷 상점</a>
+  </nav>
+
+  <header>
+    <h1>즐겨찾기 코디</h1>
+    <p class="subtitle">저장해둔 코디들을 한눈에 확인하고 관리해보세요</p>
+  </header>
+
+  <div class="container">
+    <div class="favorites" id="favorites-list">
+      <!-- JavaScript로 동적 추가 -->
+    </div>
+    <a href="index.html" class="back-btn">← 메인으로 돌아가기</a>
+  </div>
+
+  <script>
+    const favorites = [
+      {
+        title: "봄 데일리룩",
+        desc: "파스텔 상의 + 청바지 + 흰색 스니커즈 조합",
+        img: "https://images.unsplash.com/photo-1512437001654-74e4e1e2c5b2?auto=format&fit=crop&w=800&q=80",
+        link: "https://www.musinsa.com/"
+      },
+      {
+        title: "가을 감성룩",
+        desc: "베이지 코트 + 니트 + 롱부츠 스타일",
+        img: "https://images.unsplash.com/photo-1603052875274-8d9f9b5b5f5e?auto=format&fit=crop&w=800&q=80",
+        link: "https://www.musinsa.com/"
+      }
+    ];
+
+    const listContainer = document.getElementById('favorites-list');
+
+    function renderFavorites() {
+      listContainer.innerHTML = '';
+      if (favorites.length === 0) {
+        listContainer.innerHTML = '<p style="text-align:center; font-size:1.1rem; color:gray;">즐겨찾기한 코디가 없습니다.</p>';
+        return;
+      }
+
+      favorites.forEach((fav, index) => {
+        const card = document.createElement('div');
+        card.className = 'fav-card';
+        card.innerHTML = `
+          <img src="${fav.img}" alt="${fav.title}" />
+          <div class="fav-info">
+            <div class="fav-title">${fav.title}</div>
+            <div class="fav-desc">${fav.desc}</div>
+            <div class="fav-buttons">
+              <button class="btn-buy" onclick="window.open('${fav.link}')">무신사 구매</button>
+              <button class="btn-remove" onclick="removeFavorite(${index})">삭제</button>
+            </div>
+            <div class="rating">
+              <label for="rating-${index}">평가 점수:</label>
+              <input type="number" id="rating-${index}" min="1" max="10" placeholder="1~10" onchange="saveRating(${index}, this.value)" />
+            </div>
+          </div>
+        `;
+        listContainer.appendChild(card);
+      });
+    }
+
+    function removeFavorite(index) {
+      favorites.splice(index, 1);
+      renderFavorites();
+    }
+
+    function saveRating(index, value) {
+      console.log(`코디 ${index}번 평가점수 저장됨: ${value}`);
+      // 여기서 서버로 전송하는 코드 추가 가능
+    }
+
+    renderFavorites();
+  </script>
+
+</body>
+</html>

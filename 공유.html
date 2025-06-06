@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>코디 공유</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pVlw1gF2cXQvKHXBdIRoKkGZRtKqF7bGbcNfAjil5q1OqlY5VzML7M6UFrVdwjA37hd2hImLRJsk5iRfuk+Jrw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #1f2937, #374151);
+      margin: 0;
+      padding: 0;
+      color: #f3f4f6;
+    }
+    header {
+      background: linear-gradient(90deg, #4b5563, #6b7280);
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      position: relative;
+    }
+    header h1 {
+      font-size: 3.5rem;
+      margin: 0;
+      letter-spacing: -1.5px;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+    }
+    header::after {
+      content: 'SHARE YOUR STYLE';
+      position: absolute;
+      bottom: 10px;
+      right: 20px;
+      font-size: 1rem;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 1px;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      background-color: #4b5563;
+      padding: 1rem;
+      gap: 2rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    nav a {
+      text-decoration: none;
+      color: #f3f4f6;
+      font-weight: bold;
+      padding: 10px 16px;
+      border-radius: 10px;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    nav a:hover {
+      background-color: #9ca3af;
+      color: #1f2937;
+    }
+    .container {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 50px;
+      background: linear-gradient(to bottom right, #374151, #1f2937);
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      text-align: center;
+    }
+    h2 {
+      font-size: 2.2rem;
+      margin-bottom: 30px;
+      color: #fcd34d;
+      border-bottom: 3px solid #f59e0b;
+      display: inline-block;
+      padding-bottom: 10px;
+    }
+    .share-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    .share-buttons a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 22px;
+      border-radius: 12px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: transform 0.2s, opacity 0.3s;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      font-size: 1.05rem;
+    }
+    .share-buttons a i {
+      font-size: 1.2rem;
+    }
+    .share-buttons a:hover {
+      transform: scale(1.05);
+      opacity: 0.92;
+    }
+    .facebook { background-color: #3b5998; }
+    .twitter { background-color: #1da1f2; }
+    .instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
+    .kakao { background-color: #fee500; color: #3c1e1e; }
+    .naver { background-color: #03c75a; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>나의 코디를 공유해보세요</h1>
+</header>
+
+<nav>
+   <a href="index.html">홈</a>
+    <a href="옷장등록및관리.html">옷장등록및관리</a>
+    <a href="AI.html">AI코디분석</a>
+    <a href="코디추천.html">오늘의AI추천</a>
+    <a href="즐겨찾기.html">즐겨찾기</a>
+    <a href="커뮤니티.html">커뮤니티</a>
+    <a href="인플루언서.html">스타일인플루언서</a>
+    <a href="https://www.musinsa.com/main/musinsa/recommend?gf=A">옷 상점</a>
+</nav>
+
+<div class="container">
+  <h2>각종 SNS에 간편하게 공유해보세요!</h2>
+  <div class="share-buttons">
+    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://example.com" target="_blank" rel="noopener noreferrer">
+      <i class="fab fa-facebook-f"></i> Facebook
+    </a>
+    <a class="twitter" href="https://twitter.com/intent/tweet?url=https://example.com&text=멋진%20코디%20공유하기!" target="_blank" rel="noopener noreferrer">
+      <i class="fab fa-twitter"></i> Twitter
+    </a>
+    <a class="instagram" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
+      <i class="fab fa-instagram"></i> Instagram
+    </a>
+    <a class="kakao" href="https://sharer.kakao.com/talk/friends/picker/link?app_key=YOUR_APP_KEY&link=https://example.com" target="_blank" rel="noopener noreferrer">
+      <i class="fas fa-comment"></i> KakaoTalk
+    </a>
+    <a class="naver" href="https://share.naver.com/web/shareView.nhn?url=https://example.com&title=코디%20공유" target="_blank" rel="noopener noreferrer">
+      <i class="fas fa-leaf"></i> Naver
+    </a>
+  </div>
+</div>
+
+</body>
+</html>

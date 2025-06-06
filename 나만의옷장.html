@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>나만의 옷장</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* 네비게이션 바 */
+    nav {
+      background-color: #ffffff;
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 1rem 0;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    nav a {
+      text-decoration: none;
+      font-weight: bold;
+      color: #1f2937;
+      padding: 0.5rem;
+      border-radius: 6px;
+      transition: 0.2s;
+    }
+
+    nav a:hover {
+      background-color: #e0e7ff;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      color: #1e3a8a;
+      margin: 2rem 0 1rem;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    select, button {
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #bbb;
+      font-size: 1rem;
+      background-color: #fff;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background-color: #e0e7ff;
+      cursor: pointer;
+    }
+
+    .closet-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+      padding: 0 2rem 2rem;
+    }
+
+    .closet-item {
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+      padding: 1rem;
+      transition: transform 0.3s ease;
+      position: relative;
+    }
+
+    .closet-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .closet-item img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 0.8rem;
+    }
+
+    .closet-item p {
+      margin: 0.4rem 0;
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    .delete-btn:hover {
+      background: #dc2626;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">홈</a>
+    <a href="옷장등록및관리.html">옷장등록및관리</a>
+    <a href="AI.html">AI코디분석</a>
+    <a href="코디추천.html">오늘의AI추천</a>
+    <a href="즐겨찾기.html">즐겨찾기</a>
+    <a href="커뮤니티.html">커뮤니티</a>
+    <a href="인플루언서.html">스타일인플루언서</a>
+    <a href="https://www.musinsa.com/main/musinsa/recommend?gf=A">옷 상점</a>
+  </nav>
+
+  <h1>나만의 옷장</h1>
+
+  <div class="controls">
+    <select id="filter-season">
+      <option value="">계절 전체</option>
+      <option value="봄">봄</option>
+      <option value="여름">여름</option>
+      <option value="가을">가을</option>
+      <option value="겨울">겨울</option>
+    </select>
+
+    <select id="filter-style">
+      <option value="">스타일 전체</option>
+      <option value="캐주얼">캐주얼</option>
+      <option value="스트릿">스트릿</option>
+      <option value="포멀">포멀</option>
+      <option value="시크">시크</option>
+    </select>
+
+    <button onclick="sortByWearCount()">착용 횟수순 정렬</button>
+  </div>
+
+  <div class="closet-container" id="closet"></div>
+
+  <script>
+    let closetData = JSON.parse(localStorage.getItem("myCloset")) || [];
+
+    function displayCloset(data) {
+      const closetDiv = document.getElementById("closet");
+      closetDiv.innerHTML = "";
+      data.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "closet-item";
+        div.innerHTML = `
+          <button class="delete-btn" onclick="deleteItem(${index})">삭제</button>
+          <img src="${item.image}" alt="옷 이미지" />
+          <p><strong>카테고리:</strong> ${item.category}</p>
+          <p><strong>브랜드:</strong> ${item.brand}</p>
+          <p><strong>색상:</strong> ${item.color}</p>
+          <p><strong>계절:</strong> ${item.season}</p>
+          <p><strong>성별:</strong> ${item.gender}</p>
+          <p><strong>스타일:</strong> ${item.style}</p>
+          <p><strong>착용 횟수:</strong> ${item.wearCount}회</p>
+        `;
+        closetDiv.appendChild(div);
+      });
+    }
+
+    function deleteItem(index) {
+      if (confirm("이 옷을 삭제하시겠습니까?")) {
+        closetData.splice(index, 1);
+        localStorage.setItem("myCloset", JSON.stringify(closetData));
+        displayCloset(closetData);
+      }
+    }
+
+    function sortByWearCount() {
+      closetData.sort((a, b) => b.wearCount - a.wearCount);
+      displayCloset(closetData);
+    }
+
+    function applyFilter() {
+      const season = document.getElementById("filter-season").value;
+      const style = document.getElementById("filter-style").value;
+      const filtered = closetData.filter(item =>
+        (!season || item.season === season) &&
+        (!style || item.style.includes(style))
+      );
+      displayCloset(filtered);
+    }
+
+    document.getElementById("filter-season").addEventListener("change", applyFilter);
+    document.getElementById("filter-style").addEventListener("change", applyFilter);
+
+    displayCloset(closetData);
+  </script>
+
+</body>
+</html>
