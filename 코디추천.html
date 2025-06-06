@@ -94,14 +94,14 @@
 </header>
 
 <nav>
-      <a href="index.html">홈</a>
-    <a href="옷장등록및관리.html">옷장등록및관리</a>
-    <a href="AI.html">AI코디분석</a>
-    <a href="코디추천.html">오늘의AI추천</a>
-    <a href="즐겨찾기.html">즐겨찾기</a>
-    <a href="커뮤니티.html">커뮤니티</a>
-    <a href="인플루언서.html">스타일인플루언서</a>
-    <a href="https://www.musinsa.com/main/musinsa/recommend?gf=A">옷 상점</a>
+  <a href="index.html">홈</a>
+  <a href="옷장등록및관리.html">옷장등록및관리</a>
+  <a href="AI.html">AI코디분석</a>
+  <a href="코디추천.html">오늘의AI추천</a>
+  <a href="즐겨찾기.html">즐겨찾기</a>
+  <a href="커뮤니티.html">커뮤니티</a>
+  <a href="인플루언서.html">스타일인플루언서</a>
+  <a href="https://www.musinsa.com/main/musinsa/recommend?gf=A">옷 상점</a>
 </nav>
 
 <main>
@@ -191,12 +191,13 @@ function addToFavorites() {
   const favorite = {
     title: `${season} ${style} 룩`,
     desc: outfit,
-    img: "https://www.musinsa.com"
+    img: "https://image.musinsa.com/mfile_s01/2024/05/04/18177697_1_500.jpg",
+    link: "https://www.musinsa.com"
   };
 
   let favs = JSON.parse(localStorage.getItem('favorites') || '[]');
   favs.push(favorite);
-  localStorage.setItem('즐겨찾기', JSON.stringify(favs));
+  localStorage.setItem('favorites', JSON.stringify(favs));
 
   if (confirm("즐겨찾기에 추가되었습니다. 즐겨찾기 페이지로 이동하시겠습니까?")) {
     window.location.href = "즐겨찾기.html";
